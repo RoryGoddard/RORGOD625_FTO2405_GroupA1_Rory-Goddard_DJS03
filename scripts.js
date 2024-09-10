@@ -3,6 +3,7 @@ import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js";
 let page = 1;
 let matches = books;
 
+// Populates page with book preview button elements
 const starting = document.createDocumentFragment();
 
 for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
@@ -27,6 +28,7 @@ for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
 
 document.querySelector("[data-list-items]").appendChild(starting);
 
+// Populates the search and filter fields
 const genreHtml = document.createDocumentFragment();
 const firstGenreElement = document.createElement("option");
 firstGenreElement.value = "any";
@@ -57,19 +59,18 @@ for (const [id, name] of Object.entries(authors)) {
 
 document.querySelector("[data-search-authors]").appendChild(authorsHtml);
 
-if (
-  window.matchMedia &&
-  window.matchMedia("(prefers-color-scheme: dark)").matches
-) {
-  document.querySelector("[data-settings-theme]").value = "night";
-  document.documentElement.style.setProperty("--color-dark", "255, 255, 255");
-  document.documentElement.style.setProperty("--color-light", "10, 10, 20");
-} else {
-  document.querySelector("[data-settings-theme]").value = "day";
-  document.documentElement.style.setProperty("--color-dark", "10, 10, 20");
-  document.documentElement.style.setProperty("--color-light", "255, 255, 255");
+// Light & Dark mode handler
+function setightOrDarkMode(theme) {
+  const colorConfig = theme === "night" 
+    ? { dark: "255, 255, 255", light: "10, 10, 20" }
+    : { dark: "10, 10, 20", light: "255, 255, 255" };
+
+  document.documentElement.style.setProperty("--color-dark", colorConfig.dark);
+  document.documentElement.style.setProperty("--color-light", colorConfig.light);
+  document.querySelector("[data-settings-theme]").value = theme;
 }
 
+//
 document.querySelector("[data-list-button]").innerText =
   `Show more (${books.length - BOOKS_PER_PAGE})`;
 document.querySelector("[data-list-button]").disabled =
@@ -271,3 +272,7 @@ document
         active.description;
     }
   });
+
+  // TODO
+  // 1. Write init function to initialise page
+  // 2. Write helper functions to be called within init function
