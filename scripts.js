@@ -276,3 +276,15 @@ document
   // TODO
   // 1. Write init function to initialise page
   // 2. Write helper functions to be called within init function
+
+  //Call helper functions within
+  function init() {
+    //Generate book button previews
+
+    //Populate genre fields
+    //Populate author fields
+
+    //Check user preference and set light/dark mode with function
+
+    //Setup event listeners
+  }
