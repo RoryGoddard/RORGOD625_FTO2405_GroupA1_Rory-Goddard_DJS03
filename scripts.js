@@ -50,6 +50,7 @@ function init() {
   const prefersDarkScheme = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
   setLightOrDarkMode(prefersDarkScheme ? "night" : "day");
 
+  //Setup all event listeners on page
   setupEventListeners()
 }
 
