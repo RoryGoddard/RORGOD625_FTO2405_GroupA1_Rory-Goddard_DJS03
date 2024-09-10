@@ -81,31 +81,6 @@ document.querySelector("[data-list-button]").innerHTML = `
     <span class="list__remaining"> (${matches.length - page * BOOKS_PER_PAGE > 0 ? matches.length - page * BOOKS_PER_PAGE : 0})</span>
 `;
 
-document.querySelector("[data-search-cancel]").addEventListener("click", () => {
-  document.querySelector("[data-search-overlay]").open = false;
-});
-
-document
-  .querySelector("[data-settings-cancel]")
-  .addEventListener("click", () => {
-    document.querySelector("[data-settings-overlay]").open = false;
-  });
-
-document.querySelector("[data-header-search]").addEventListener("click", () => {
-  document.querySelector("[data-search-overlay]").open = true;
-  document.querySelector("[data-search-title]").focus();
-});
-
-document
-  .querySelector("[data-header-settings]")
-  .addEventListener("click", () => {
-    document.querySelector("[data-settings-overlay]").open = true;
-  });
-
-document.querySelector("[data-list-close]").addEventListener("click", () => {
-  document.querySelector("[data-list-active]").open = false;
-});
-
 document
   .querySelector("[data-settings-form]")
   .addEventListener("submit", (event) => {
@@ -288,3 +263,29 @@ document
 
     //Setup event listeners
   }
+
+  // Setup event listeners
+function setupEventListeners() {
+  document.querySelector("[data-search-cancel]").addEventListener("click", () => {
+    document.querySelector("[data-search-overlay]").open = false;
+  });
+
+  document.querySelector("[data-settings-cancel]").addEventListener("click", () => {
+    document.querySelector("[data-settings-overlay]").open = false;
+  });
+
+  document.querySelector("[data-header-search]").addEventListener("click", () => {
+    document.querySelector("[data-search-overlay]").open = true;
+    document.querySelector("[data-search-title]").focus();
+  });
+
+  document.querySelector("[data-header-settings]").addEventListener("click", () => {
+    document.querySelector("[data-settings-overlay]").open = true;
+  });
+
+  document.querySelector("[data-list-close]").addEventListener("click", () => {
+    document.querySelector("[data-list-active]").open = false;
+  });
+
+  
+}
