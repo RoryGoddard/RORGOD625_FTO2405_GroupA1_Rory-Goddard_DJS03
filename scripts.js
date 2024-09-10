@@ -92,8 +92,14 @@ function setupEventListeners() {
     document.querySelector("[data-list-items]").appendChild(fragment);
     page += 1;
 
-    //Disable the button when all books have been displayed
-    document.querySelector("[data-list-button]").disabled = matches.length <= page * BOOKS_PER_PAGE;
+    // Update "Show more" button
+    const remaining = matches.length - page * BOOKS_PER_PAGE;
+    const showMoreButton = document.querySelector("[data-list-button]");
+    showMoreButton.disabled = remaining <= 0;
+    showMoreButton.innerHTML = `
+      <span>Show more</span>
+      <span class="list__remaining"> (${remaining > 0 ? remaining : 0})</span>
+    `;  
   });
 
   // Event listener that opens book previews on book preview button click, displaying that books data
@@ -164,10 +170,13 @@ function displayBookSearchResults(results) {
   listItems.appendChild(fragment);
 
   //Modify button according to the amount of remaining books - ie disable it if the results are less than one page
-  document.querySelector("[data-list-button]").disabled = results.length <= BOOKS_PER_PAGE;
-  document.querySelector("[data-list-button]").innerHTML = `
+  // Update "Show more" button
+  const remaining = results.length - BOOKS_PER_PAGE;
+  const showMoreButton = document.querySelector("[data-list-button]");
+  showMoreButton.disabled = remaining <= 0;
+  showMoreButton.innerHTML = `
     <span>Show more</span>
-    <span class="list__remaining"> (${results.length > BOOKS_PER_PAGE ? results.length - BOOKS_PER_PAGE : 0})</span>
+    <span class="list__remaining"> (${remaining > 0 ? remaining : 0})</span>
   `;
 }
 
