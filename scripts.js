@@ -135,6 +135,27 @@ function setupEventListeners() {
   });
 }
 
+//Function that creates option fields based on arguments passed in
+//Selector is the element to append our fragment to,
+//Options is an object containing id's and names of the options
+//defaultOption is going to be the innerText value of our first created element within the fragment
+function generateFieldNames(selector, options, defaultOption) {
+  const fragment = document.createDocumentFragment();
+  const firstElement = document.createElement("option");
+  firstElement.value = "any";
+  firstElement.innerText = defaultOption;
+  fragment.appendChild(firstElement);
+
+  for (const [id, name] of Object.entries(options)) {
+    const optionElement = document.createElement("option");
+    optionElement.value = id;
+    optionElement.innerText = name;
+    fragment.appendChild(optionElement);
+  }
+
+  document.querySelector(selector).appendChild(fragment);
+}
+
 //Generate book previews on initialisation
 function generateBookPreviews() {
   const fragment = document.createDocumentFragment();
