@@ -112,17 +112,19 @@ document
   // 1. Write init function to initialise page
   // 2. Write helper functions to be called within init function
 
-  //Call helper functions within
-  function init() {
-    //Generate book button previews
+//Call helper functions within
+function init() {
+  //Generate book button previews
 
-    //Populate genre fields
-    //Populate author fields
+  //Populate genre fields
+  //Populate author fields
 
-    //Check user preference and set light/dark mode with function
+  //Check user preference and set light/dark mode with function call
+  const prefersDarkScheme = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  setLightOrDarkMode(prefersDarkScheme ? "night" : "day");
 
-    setupEventListeners()
-  }
+  setupEventListeners()
+}
 
 function setupEventListeners() {
   document.querySelector("[data-search-cancel]").addEventListener("click", () => {
