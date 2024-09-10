@@ -20,6 +20,15 @@ function init() {
 
   //Setup all event listeners on page
   setupEventListeners()
+
+  //Setup "Show more" button on page load to reflect number of books remaining dynamically
+  const showMoreButton = document.querySelector("[data-list-button]");
+  const remaining = books.length - BOOKS_PER_PAGE;
+  showMoreButton.innerHTML = `
+    <span>Show more</span>
+    <span class="list__remaining"> (${remaining > 0 ? remaining : 0})</span>
+  `;
+  showMoreButton.disabled = remaining <= 0;
 }
 
 init()
