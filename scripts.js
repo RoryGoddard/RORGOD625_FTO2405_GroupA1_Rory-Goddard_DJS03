@@ -290,7 +290,7 @@ function setupEventListeners() {
     //Call helper function to display results, passing in filtered books
     displayBookSearchResults(matches)
 
-    
+
   });
 }
 
@@ -314,6 +314,18 @@ function displayBookSearchResults(results) {
     <span>Show more</span>
     <span class="list__remaining"> (${results.length > BOOKS_PER_PAGE ? results.length - BOOKS_PER_PAGE : 0})</span>
   `;
+}
+
+// Helper function to filter books based on search criteria, returns an array of filtered books by genre title and author
+function filterBooks({genre, title, author}) {
+  //Return arrary of filtered books 
+  return books.filter(book => {
+    const genreMatch = genre === "any" || book.genres.includes(genre);
+    const titleMatch = !title.trim() || book.title.toLowerCase().includes(title.toLowerCase());
+    const authorMatch = author === "any" || book.author === author;
+    
+    return genreMatch && titleMatch && authorMatch;
+  });
 }
 
 init()
