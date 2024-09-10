@@ -215,7 +215,7 @@ function setupEventListeners() {
     document.querySelector("[data-search-overlay]").open = false;
   });
 
-  //Show more bookks when button clicked
+  //Show more books when button clicked
   document.querySelector("[data-list-button]").addEventListener("click", () => {
     const fragment = document.createDocumentFragment();
     //Increment and extend page by the next page of books
