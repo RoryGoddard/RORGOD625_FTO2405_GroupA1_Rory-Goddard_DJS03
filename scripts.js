@@ -292,7 +292,8 @@ function setupEventListeners() {
     //Call helper function to display results, passing in filtered books
     displayBookSearchResults(matches)
 
-
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    document.querySelector("[data-search-overlay]").open = false;
   });
 }
 
