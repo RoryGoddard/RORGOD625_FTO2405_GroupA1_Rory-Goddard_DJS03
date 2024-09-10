@@ -220,7 +220,7 @@ function setupEventListeners() {
     //Create fragment and iterate through next portion of books, adding them to fragment
     const fragment = document.createDocumentFragment();
     for (const book of matches.slice(page * BOOKS_PER_PAGE, (page + 1) * BOOKS_PER_PAGE)) {
-      fragment.appendChild(createPreviewButton(book));
+      fragment.appendChild(createBookPreviewButton(book));
     }
 
     //Append fragment with next page of books to the DOM, increment page by 1
@@ -242,7 +242,7 @@ function displayBookSearchResults(results) {
   //Create fragment to hold the resulting books within
   const fragment = document.createDocumentFragment();
   for (const book of results.slice(0, BOOKS_PER_PAGE)) {
-    fragment.appendChild(createPreviewButton(book));
+    fragment.appendChild(createBookPreviewButton(book));
   }
 
   //Append the resulting books fragment to the previously cleared list
@@ -256,7 +256,7 @@ function displayBookSearchResults(results) {
   `;
 }
 
-// Helper function to filter books based on search criteria, returns an array of filtered books by genre title and author
+//Helper function to filter books based on search criteria, returns an array of filtered books by genre title and author
 function filterBooks({genre, title, author}) {
   return books.filter(book => {
     const genreMatch = genre === "any" || book.genres.includes(genre);
@@ -265,6 +265,21 @@ function filterBooks({genre, title, author}) {
     
     return genreMatch && titleMatch && authorMatch;
   });
+}
+
+//Helper function to create button previews on the individual books
+function createBookPreviewButton({ author, id, image, title }) {
+  const element = document.createElement("button");
+  element.classList = "preview";
+  element.setAttribute("data-preview", id);
+  element.innerHTML = `
+    <img class="preview__image" src="${image}" />
+    <div class="preview__info">
+      <h3 class="preview__title">${title}</h3>
+      <div class="preview__author">${authors[author]}</div>
+    </div>
+  `;
+  return element;
 }
 
 init()
