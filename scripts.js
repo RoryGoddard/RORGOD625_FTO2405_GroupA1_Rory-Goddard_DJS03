@@ -271,7 +271,49 @@ function setupEventListeners() {
     document.querySelector("[data-settings-overlay]").open = false;
   });
 
+  document.querySelector("[data-search-form]").addEventListener("submit", (event) => {
+    event.preventDefault();
 
+    const formData = new FormData(event.target);
+    const filters = Object.fromEntries(formData);
+
+    matches = filterBooks(filters);
+    page = 1;
+    
+    //Handle cases where there are no search results
+    if (matches.length === 0) {
+      document.querySelector("[data-list-message]").classList.add("list__message_show");
+    } else {
+      document.querySelector("[data-list-message]").classList.remove("list__message_show");
+    }
+
+    //Call helper function to display results, passing in filtered books
+    displayBookSearchResults(matches)
+
+    
+  });
+}
+
+//This is an abstraction whereby this function can be called to handle when results need to be displayed when a user searches for specific books
+function displayBookSearchResults(results) {
+  const listItems = document.querySelector("[data-list-items]");
+  listItems.innerHTML = ""; //Clearing the innerhtml in order to display the books from the search within
+
+  //Create fragment to hold the resulting books within
+  const fragment = document.createDocumentFragment();
+  for (const book of results.slice(0, BOOKS_PER_PAGE)) {
+    fragment.appendChild(createPreviewButton(book));
+  }
+
+  //Append the resulting books fragment to the previously cleared list
+  listItems.appendChild(fragment);
+
+  //Modify button according to the amount of remaining books - ie disable it if the results are less than one page
+  document.querySelector("[data-list-button]").disabled = results.length <= BOOKS_PER_PAGE;
+  document.querySelector("[data-list-button]").innerHTML = `
+    <span>Show more</span>
+    <span class="list__remaining"> (${results.length > BOOKS_PER_PAGE ? results.length - BOOKS_PER_PAGE : 0})</span>
+  `;
 }
 
 init()
