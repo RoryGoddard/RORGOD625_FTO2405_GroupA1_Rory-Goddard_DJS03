@@ -240,7 +240,6 @@ function displayBookSearchResults(results) {
 
 // Helper function to filter books based on search criteria, returns an array of filtered books by genre title and author
 function filterBooks({genre, title, author}) {
-  //Return arrary of filtered books 
   return books.filter(book => {
     const genreMatch = genre === "any" || book.genres.includes(genre);
     const titleMatch = !title.trim() || book.title.toLowerCase().includes(title.toLowerCase());
