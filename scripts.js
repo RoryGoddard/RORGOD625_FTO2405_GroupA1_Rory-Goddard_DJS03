@@ -3,31 +3,6 @@ import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js";
 let page = 1;
 let matches = books;
 
-// Populates page with book preview button elements
-const starting = document.createDocumentFragment();
-
-for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
-  const element = document.createElement("button");
-  element.classList = "preview";
-  element.setAttribute("data-preview", id);
-
-  element.innerHTML = `
-        <img
-            class="preview__image"
-            src="${image}"
-        />
-        
-        <div class="preview__info">
-            <h3 class="preview__title">${title}</h3>
-            <div class="preview__author">${authors[author]}</div>
-        </div>
-    `;
-
-  starting.appendChild(element);
-}
-
-document.querySelector("[data-list-items]").appendChild(starting);
-
 // Populates the search and filter fields
 const genreHtml = document.createDocumentFragment();
 const firstGenreElement = document.createElement("option");
@@ -58,17 +33,6 @@ for (const [id, name] of Object.entries(authors)) {
 }
 
 document.querySelector("[data-search-authors]").appendChild(authorsHtml);
-
-// Light & Dark mode handler
-function setLightOrDarkMode(theme) {
-  const colorConfig = theme === "night" 
-    ? { dark: "255, 255, 255", light: "10, 10, 20" }
-    : { dark: "10, 10, 20", light: "255, 255, 255" };
-
-  document.documentElement.style.setProperty("--color-dark", colorConfig.dark);
-  document.documentElement.style.setProperty("--color-light", colorConfig.light);
-  document.querySelector("[data-settings-theme]").value = theme;
-}
 
 //
 document.querySelector("[data-list-button]").innerText =
@@ -231,7 +195,13 @@ function setupEventListeners() {
     document.querySelector("[data-list-button]").disabled = matches.length <= page * BOOKS_PER_PAGE;
   });
 
-
+  // Event listener that opens book previews on book preview button click, displaying that books data
+  document.querySelector("[data-list-items]").addEventListener("click", (event) => {
+    const button = event.target.closest("[data-preview]");
+    if (button) {
+      openBookDetails(button.getAttribute("data-preview"));
+    }
+  });
 }
 
 //This is an abstraction whereby this function can be called to handle when results need to be displayed when a user searches for specific books
@@ -280,6 +250,17 @@ function createBookPreviewButton({ author, id, image, title }) {
     </div>
   `;
   return element;
+}
+
+// Light & Dark mode handler
+function setLightOrDarkMode(theme) {
+  const colorConfig = theme === "night" 
+    ? { dark: "255, 255, 255", light: "10, 10, 20" }
+    : { dark: "10, 10, 20", light: "255, 255, 255" };
+
+  document.documentElement.style.setProperty("--color-dark", colorConfig.dark);
+  document.documentElement.style.setProperty("--color-light", colorConfig.light);
+  document.querySelector("[data-settings-theme]").value = theme;
 }
 
 init()
