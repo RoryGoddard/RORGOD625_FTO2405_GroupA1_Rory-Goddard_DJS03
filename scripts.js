@@ -217,12 +217,13 @@ function setupEventListeners() {
 
   //Show more books when button clicked
   document.querySelector("[data-list-button]").addEventListener("click", () => {
+    //Create fragment and iterate through next portion of books, adding them to fragment
     const fragment = document.createDocumentFragment();
-    //Increment and extend page by the next page of books
     for (const book of matches.slice(page * BOOKS_PER_PAGE, (page + 1) * BOOKS_PER_PAGE)) {
       fragment.appendChild(createPreviewButton(book));
     }
 
+    //Append fragment with next page of books to the DOM, increment page by 1
     document.querySelector("[data-list-items]").appendChild(fragment);
     page += 1;
 
