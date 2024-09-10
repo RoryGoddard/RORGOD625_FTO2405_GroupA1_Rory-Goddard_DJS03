@@ -34,39 +34,6 @@ for (const [id, name] of Object.entries(authors)) {
 
 document.querySelector("[data-search-authors]").appendChild(authorsHtml);
 
-document
-  .querySelector("[data-list-items]")
-  .addEventListener("click", (event) => {
-    const pathArray = Array.from(event.path || event.composedPath());
-    let active = null;
-
-    for (const node of pathArray) {
-      if (active) break;
-
-      if (node?.dataset?.preview) {
-        let result = null;
-
-        for (const singleBook of books) {
-          if (result) break;
-          if (singleBook.id === node?.dataset?.preview) result = singleBook;
-        }
-
-        active = result;
-      }
-    }
-
-    if (active) {
-      document.querySelector("[data-list-active]").open = true;
-      document.querySelector("[data-list-blur]").src = active.image;
-      document.querySelector("[data-list-image]").src = active.image;
-      document.querySelector("[data-list-title]").innerText = active.title;
-      document.querySelector("[data-list-subtitle]").innerText =
-        `${authors[active.author]} (${new Date(active.published).getFullYear()})`;
-      document.querySelector("[data-list-description]").innerText =
-        active.description;
-    }
-  });
-
   // TODO
   // 1. Write init function to initialise page
   // 2. Write helper functions to be called within init function
@@ -74,6 +41,7 @@ document
 //Call helper functions within
 function init() {
   //Generate book button previews
+  generateBookPreviews()
 
   //Populate genre fields
   //Populate author fields
@@ -84,6 +52,7 @@ function init() {
 
   setupEventListeners()
 }
+
 
 function setupEventListeners() {
   document.querySelector("[data-search-cancel]").addEventListener("click", () => {
@@ -163,6 +132,15 @@ function setupEventListeners() {
       displayBookDetails(button.getAttribute("data-preview"));
     }
   });
+}
+
+//Generate book previews on initialisation
+function generateBookPreviews() {
+  const fragment = document.createDocumentFragment();
+  for (const book of matches.slice(0, BOOKS_PER_PAGE)) {
+    fragment.appendChild(createBookPreviewButton(book));
+  }
+  document.querySelector("[data-list-items]").appendChild(fragment);
 }
 
 //Display book details depending on corresponding ID
