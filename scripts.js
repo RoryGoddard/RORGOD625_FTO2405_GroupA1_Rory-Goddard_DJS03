@@ -34,47 +34,6 @@ for (const [id, name] of Object.entries(authors)) {
 
 document.querySelector("[data-search-authors]").appendChild(authorsHtml);
 
-//
-document.querySelector("[data-list-button]").innerText =
-  `Show more (${books.length - BOOKS_PER_PAGE})`;
-document.querySelector("[data-list-button]").disabled =
-  matches.length - page * BOOKS_PER_PAGE > 0;
-
-document.querySelector("[data-list-button]").innerHTML = `
-    <span>Show more</span>
-    <span class="list__remaining"> (${matches.length - page * BOOKS_PER_PAGE > 0 ? matches.length - page * BOOKS_PER_PAGE : 0})</span>
-`;
-
-document.querySelector("[data-list-button]").addEventListener("click", () => {
-  const fragment = document.createDocumentFragment();
-
-  for (const { author, id, image, title } of matches.slice(
-    page * BOOKS_PER_PAGE,
-    (page + 1) * BOOKS_PER_PAGE
-  )) {
-    const element = document.createElement("button");
-    element.classList = "preview";
-    element.setAttribute("data-preview", id);
-
-    element.innerHTML = `
-            <img
-                class="preview__image"
-                src="${image}"
-            />
-            
-            <div class="preview__info">
-                <h3 class="preview__title">${title}</h3>
-                <div class="preview__author">${authors[author]}</div>
-            </div>
-        `;
-
-    fragment.appendChild(element);
-  }
-
-  document.querySelector("[data-list-items]").appendChild(fragment);
-  page += 1;
-});
-
 document
   .querySelector("[data-list-items]")
   .addEventListener("click", (event) => {
@@ -201,9 +160,23 @@ function setupEventListeners() {
   document.querySelector("[data-list-items]").addEventListener("click", (event) => {
     const button = event.target.closest("[data-preview]");
     if (button) {
-      openBookDetails(button.getAttribute("data-preview"));
+      displayBookDetails(button.getAttribute("data-preview"));
     }
   });
+}
+
+//Display book details depending on corresponding ID
+function displayBookDetails(bookId) {
+  const book = books.find(b => b.id === bookId);
+
+  if (book) {
+    document.querySelector("[data-list-active]").open = true;
+    document.querySelector("[data-list-blur]").src = book.image;
+    document.querySelector("[data-list-image]").src = book.image;
+    document.querySelector("[data-list-title]").innerText = book.title;
+    document.querySelector("[data-list-subtitle]").innerText = `${authors[book.author]} (${new Date(book.published).getFullYear()})`;
+    document.querySelector("[data-list-description]").innerText = book.description;
+  }
 }
 
 //This is an abstraction whereby this function can be called to handle when results need to be displayed when a user searches for specific books
