@@ -274,9 +274,11 @@ function setupEventListeners() {
   document.querySelector("[data-search-form]").addEventListener("submit", (event) => {
     event.preventDefault();
 
+    //Setup filters object to be used later to filter books via formdata (genre, author, title)
     const formData = new FormData(event.target);
     const filters = Object.fromEntries(formData);
 
+    //Call helper function to filter books based on above filters from form
     matches = filterBooks(filters);
     page = 1;
     
