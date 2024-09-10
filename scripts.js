@@ -3,48 +3,16 @@ import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js";
 let page = 1;
 let matches = books;
 
-// Populates the search and filter fields
-const genreHtml = document.createDocumentFragment();
-const firstGenreElement = document.createElement("option");
-firstGenreElement.value = "any";
-firstGenreElement.innerText = "All Genres";
-genreHtml.appendChild(firstGenreElement);
-
-for (const [id, name] of Object.entries(genres)) {
-  const element = document.createElement("option");
-  element.value = id;
-  element.innerText = name;
-  genreHtml.appendChild(element);
-}
-
-document.querySelector("[data-search-genres]").appendChild(genreHtml);
-
-const authorsHtml = document.createDocumentFragment();
-const firstAuthorElement = document.createElement("option");
-firstAuthorElement.value = "any";
-firstAuthorElement.innerText = "All Authors";
-authorsHtml.appendChild(firstAuthorElement);
-
-for (const [id, name] of Object.entries(authors)) {
-  const element = document.createElement("option");
-  element.value = id;
-  element.innerText = name;
-  authorsHtml.appendChild(element);
-}
-
-document.querySelector("[data-search-authors]").appendChild(authorsHtml);
-
-  // TODO
-  // 1. Write init function to initialise page
-  // 2. Write helper functions to be called within init function
-
 //Call helper functions within
 function init() {
   //Generate book button previews
   generateBookPreviews()
 
-  //Populate genre fields
-  //Populate author fields
+  //Generate author field names
+  generateOptionsFieldNames("[data-search-authors]", authors, "All Authors");
+
+  //Generate genre field names
+  generateOptionsFieldNames("[data-search-genres]", genres, "All Genres");
 
   //Check user preference and set light/dark mode with function call
   const prefersDarkScheme = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -53,6 +21,8 @@ function init() {
   //Setup all event listeners on page
   setupEventListeners()
 }
+
+init()
 
 
 function setupEventListeners() {
@@ -139,7 +109,7 @@ function setupEventListeners() {
 //Selector is the element to append our fragment to,
 //Options is an object containing id's and names of the options
 //defaultOption is going to be the innerText value of our first created element within the fragment
-function generateFieldNames(selector, options, defaultOption) {
+function generateOptionsFieldNames(selector, options, defaultOption) {
   const fragment = document.createDocumentFragment();
   const firstElement = document.createElement("option");
   firstElement.value = "any";
@@ -237,5 +207,3 @@ function setLightOrDarkMode(theme) {
   document.documentElement.style.setProperty("--color-light", colorConfig.light);
   document.querySelector("[data-settings-theme]").value = theme;
 }
-
-init()
