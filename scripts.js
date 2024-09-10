@@ -60,7 +60,7 @@ for (const [id, name] of Object.entries(authors)) {
 document.querySelector("[data-search-authors]").appendChild(authorsHtml);
 
 // Light & Dark mode handler
-function setightOrDarkMode(theme) {
+function setLightOrDarkMode(theme) {
   const colorConfig = theme === "night" 
     ? { dark: "255, 255, 255", light: "10, 10, 20" }
     : { dark: "10, 10, 20", light: "255, 255, 255" };
@@ -81,29 +81,6 @@ document.querySelector("[data-list-button]").innerHTML = `
     <span class="list__remaining"> (${matches.length - page * BOOKS_PER_PAGE > 0 ? matches.length - page * BOOKS_PER_PAGE : 0})</span>
 `;
 
-document
-  .querySelector("[data-settings-form]")
-  .addEventListener("submit", (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const { theme } = Object.fromEntries(formData);
-
-    if (theme === "night") {
-      document.documentElement.style.setProperty(
-        "--color-dark",
-        "255, 255, 255"
-      );
-      document.documentElement.style.setProperty("--color-light", "10, 10, 20");
-    } else {
-      document.documentElement.style.setProperty("--color-dark", "10, 10, 20");
-      document.documentElement.style.setProperty(
-        "--color-light",
-        "255, 255, 255"
-      );
-    }
-
-    document.querySelector("[data-settings-overlay]").open = false;
-  });
 
 document
   .querySelector("[data-search-form]")
@@ -261,7 +238,7 @@ document
 
     //Check user preference and set light/dark mode with function
 
-    //Setup event listeners
+    setupEventListeners()
   }
 
 function setupEventListeners() {
@@ -286,5 +263,15 @@ function setupEventListeners() {
     document.querySelector("[data-list-active]").open = false;
   });
 
-  
+  document.querySelector("[data-settings-form]").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const { theme } = Object.fromEntries(formData);
+    setLightOrDarkMode(theme);
+    document.querySelector("[data-settings-overlay]").open = false;
+  });
+
+
 }
+
+init()
