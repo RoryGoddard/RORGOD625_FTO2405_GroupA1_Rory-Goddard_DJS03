@@ -214,6 +214,23 @@ function setupEventListeners() {
     window.scrollTo({ top: 0, behavior: "smooth" });
     document.querySelector("[data-search-overlay]").open = false;
   });
+
+  //Show more bookks when button clicked
+  document.querySelector("[data-list-button]").addEventListener("click", () => {
+    const fragment = document.createDocumentFragment();
+    //Increment and extend page by the next page of books
+    for (const book of matches.slice(page * BOOKS_PER_PAGE, (page + 1) * BOOKS_PER_PAGE)) {
+      fragment.appendChild(createPreviewButton(book));
+    }
+
+    document.querySelector("[data-list-items]").appendChild(fragment);
+    page += 1;
+
+    //Disable the button when all books have been displayed
+    document.querySelector("[data-list-button]").disabled = matches.length <= page * BOOKS_PER_PAGE;
+  });
+
+
 }
 
 //This is an abstraction whereby this function can be called to handle when results need to be displayed when a user searches for specific books
