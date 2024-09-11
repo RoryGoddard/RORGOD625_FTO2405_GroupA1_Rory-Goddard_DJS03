@@ -1,9 +1,18 @@
+/**
+ * @ts-check
+ */
+
 import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js";
 
 let page = 1;
 let matches = books;
 
 //Call helper functions within
+
+
+/**
+ * Initialises the web page by calling helper functions within to set up fields, books, colour scheme, and event listeners
+ */
 function init() {
   //Generate book button previews
   generateBookPreviews()
@@ -33,7 +42,9 @@ function init() {
 
 init()
 
-
+/**
+ * Sets up event listeners for all interactive elements on the page such as user settings, search filters, and book elements
+ */
 function setupEventListeners() {
   document.querySelector("[data-search-cancel]").addEventListener("click", () => {
     document.querySelector("[data-search-overlay]").open = false;
@@ -131,10 +142,14 @@ function setupEventListeners() {
   });
 }
 
-//Function that creates option fields based on arguments passed in
-//Selector is the element to append our fragment to,
-//Options is an object containing id's and names of the options
-//defaultOption is going to be the innerText value of our first created element within the fragment
+/**
+ * 
+ * @param {string} selector The field to generate the options for
+ * @param {object} options The options to populate the selector with
+ * @param {string} defaultOption Optional argument that defines a default or placeholder option for the dropdown menu
+ * 
+ * Creates option fields for dropdown menus based on arguments passed in
+ */
 function generateOptionsFieldNames(selector, options, defaultOption) {
   const fragment = document.createDocumentFragment();
   const firstElement = document.createElement("option");
@@ -152,7 +167,9 @@ function generateOptionsFieldNames(selector, options, defaultOption) {
   document.querySelector(selector).appendChild(fragment);
 }
 
-//Generate book previews on initialisation
+/**
+ * Generate book previews on initialisation based on book data within data.js
+ */
 function generateBookPreviews() {
   const fragment = document.createDocumentFragment();
   for (const book of matches.slice(0, BOOKS_PER_PAGE)) {
@@ -161,7 +178,12 @@ function generateBookPreviews() {
   document.querySelector("[data-list-items]").appendChild(fragment);
 }
 
-//Display book details depending on corresponding ID
+/**
+ * 
+ * @param {string} bookId Book ID references book details in data.js
+ * Display book details depending on corresponding ID
+ * 
+ */
 function displayBookDetails(bookId) {
   const book = books.find(b => b.id === bookId);
 
@@ -176,6 +198,12 @@ function displayBookDetails(bookId) {
 }
 
 //This is an abstraction whereby this function can be called to handle when results need to be displayed when a user searches for specific books
+/**
+ * 
+ * @param {object} results Object of books that match the filtered search 
+ * 
+ * Displays search results of searches for books based on filters
+ */
 function displayBookSearchResults(results) {
   const listItems = document.querySelector("[data-list-items]");
   listItems.innerHTML = ""; //Clearing the innerhtml in order to display the books from the search within
@@ -201,6 +229,14 @@ function displayBookSearchResults(results) {
 }
 
 //Helper function to filter books based on search criteria, returns an array of filtered books by genre title and author
+/**
+ * 
+ * @param {string} genre Chosen genre to filter books by
+ * @param {string} title Chosen keywords to filter books by
+ * @param {string} author Chosen author to filter books by
+ * 
+ * @returns filtered books array based on the filter arguments that were passed in 
+ */
 function filterBooks({genre, title, author}) {
   return books.filter(book => {
     const genreMatch = genre === "any" || book.genres.includes(genre);
@@ -212,6 +248,15 @@ function filterBooks({genre, title, author}) {
 }
 
 //Helper function to create button previews on the individual books
+/**
+ * 
+ * @param {string} author Author name from destructured book object
+ * @param {string} id Book id as per data.js
+ * @param {string} image Book image path from destructured book object
+ * @param {string} title Book title from destructured book object
+ * 
+ * @returns Book preview html button element
+ */
 function createBookPreviewButton({ author, id, image, title }) {
   const element = document.createElement("button");
   element.classList = "preview";
@@ -226,8 +271,14 @@ function createBookPreviewButton({ author, id, image, title }) {
   return element;
 }
 
-// Light & Dark mode handler
+/**
+ * 
+ * @param {string} theme Theme string to be passed in to determine the theme of the application
+ * 
+ * function abstraction that changes the theme of the application
+ */
 function setLightOrDarkMode(theme) {
+  console.log(typeof(theme))
   const colorConfig = theme === "night" 
     ? { dark: "255, 255, 255", light: "10, 10, 20" }
     : { dark: "10, 10, 20", light: "255, 255, 255" };
