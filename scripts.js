@@ -58,24 +58,34 @@ function setupEventListeners() {
 
   document.querySelector("[data-settings-form]").addEventListener("submit", (event) => {
     event.preventDefault();
+
+    //Grab form data
     const formData = new FormData(event.target);
+
+    //Create theme object from form data
     const { theme } = Object.fromEntries(formData);
+
+    //Call helper function to set light or dark mode based on theme object
     setLightOrDarkMode(theme);
+
+    //Close settings modal window
     document.querySelector("[data-settings-overlay]").open = false;
   });
 
   document.querySelector("[data-search-form]").addEventListener("submit", (event) => {
     event.preventDefault();
 
-    //Setup filters object to be used later to filter books via formdata (genre, author, title)
+    //Grab form data from search fields
     const formData = new FormData(event.target);
+
+    //Create filters object based on form data from search fields
     const filters = Object.fromEntries(formData);
 
     //Call helper function to filter books based on above filters from form
     matches = filterBooks(filters);
     page = 1;
     
-    //Handle cases where there are no search results
+    //Handle cases where there are no search results, displays message informing user there are no results and filters may be too narrow
     if (matches.length === 0) {
       document.querySelector("[data-list-message]").classList.add("list__message_show");
     } else {
@@ -85,6 +95,7 @@ function setupEventListeners() {
     //Call helper function to display results, passing in filtered books
     displayBookSearchResults(matches)
 
+    //Scroll to the top of the page on search and close the data search overlay
     window.scrollTo({ top: 0, behavior: "smooth" });
     document.querySelector("[data-search-overlay]").open = false;
   });
